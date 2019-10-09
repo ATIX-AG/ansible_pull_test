@@ -1,0 +1,22 @@
+---
+- hosts: web1
+  gather_facts: no
+  tasks:
+    - name: Create directory
+      file:
+        path: /tmp/ansible_speed
+        state: directory
+
+    - name: Create Files
+      include: create_file.yaml
+      loop: "{{ range(0, 20)|list  }}"
+
+    - name: Remove directory
+      file:
+        path: /tmp/ansible_speed
+        state: absent
+
+    - name: Run a command 100 times
+      command: "echo {{ item }}"
+      loop: "{{ range(0, 100)|list  }}"
+...
